@@ -1,0 +1,60 @@
+###############################################################################
+#  In settings.py:
+#       DATABASES = {
+#            'default': {
+#                'ENGINE': 'django.db.backends.mysql',
+#                'HOST': 'mysql',
+#                {   ...
+#            }
+#        }
+#
+#  In PyCharm configurations:
+#       Host: 0.0.0.0 - Port: 8000
+#       Python interpreter: Select the docker ...
+###############################################################################
+version: "3.1"
+
+
+
+services:
+
+    web:
+      build:
+        context: .
+        dockerfile: Dockerfile.dev
+      container_name: ${PROJECT_NAME}-django
+      env_file:
+       - .env
+      volumes:
+        - ./app:/app
+        - static_volume:/app/staticfiles
+        - ./app/node_modules:/app/node_modules
+      expose:
+        - 8001
+      depends_on:
+        - db
+        - redis
+
+    db:
+      restart: always
+      image: postgres:11-alpine
+      container_name: ${PROJECT_NAME}-postgres
+      env_file:
+        - .postgres
+      volumes:
+        - postgres_data:/var/lib/postgresql/data/
+
+    redis:
+      image: redis:latest
+      container_name: ${PROJECT_NAME}-redis
+      ports:
+        - 6379:6379
+
+
+volumes:
+  postgres_data:
+  static:
+  static_volume:
+  node_modules:
+
+
