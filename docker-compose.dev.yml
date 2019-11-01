@@ -19,6 +19,7 @@ version: "3.1"
 services:
 
     web:
+      restart: always
       build:
         context: .
         dockerfile: Dockerfile.dev
@@ -29,18 +30,22 @@ services:
         - ./app:/app
         - static_volume:/app/staticfiles
         - ./app/node_modules:/app/node_modules
-      expose:
-        - 8001
+      ports:
+        - 9000:9000
+
       depends_on:
         - db
         - redis
 
     db:
       restart: always
-      image: postgres:11-alpine
+      image: postgres
       container_name: ${PROJECT_NAME}-postgres
-      env_file:
-        - .postgres
+      environment:
+        - POSTGRES_USER=root
+        - POSTGRES_PASSWORD=root
+        - POSTGRES_DB=teamwork_db
+        - POSTGRES_PORT=5432
       volumes:
         - postgres_data:/var/lib/postgresql/data/
 
