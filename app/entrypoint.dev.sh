@@ -15,10 +15,13 @@ echo "Collect static files"
 #until d bash -c '(echo > /dev/tcp/$HOST/$PORT) > /dev/null 2>&1' || [ $RETRIES -eq 0 ]; do
 #    echo "Waiting for Postgres server, $((RETRIES--)) remaining attempts..."
 #        sleep 1
-#    done
-python manage.py migrate
 #
+./wait-for-it.sh db:5432 && python manage.py migrate
 python manage.py collectstatic --no-input --clear
+python manage.py runserver 0.0.0.0:9000
+
+#
+
 #$ celery worker -A cowrywise --loglevel=debug --concurrency=4
 #celery -A cowrywise worker
 #celery -A cowrywise beat
@@ -27,5 +30,5 @@ echo "Starting server"
 #
 #python manage.py flush --no-input
 #python manage.py collectstatic --no-input
-python manage.py runserver 0.0.0.0:9000
+#python manage.py runserver 0.0.0.0:9000
 #exec "$@"
