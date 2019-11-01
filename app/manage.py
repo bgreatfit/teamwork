@@ -5,7 +5,7 @@ import sys
 
 
 def main():
-    settings = 'teamwork.settings.dev' if 'DJANGO_DEV' in os.environ else 'teamwork.settings'
+    settings = 'teamwork.settings_dev' if 'DJANGO_DEV' in os.environ else 'teamwork.settings'
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings)
     try:
         from django.core.management import execute_from_command_line

@@ -25,6 +25,8 @@ services:
       container_name: ${PROJECT_NAME}-django
       env_file:
        - .env
+      environment:
+        - DJANGO_DEV=development
       volumes:
         - ./app:/app
         - static_volume:/app/staticfiles
