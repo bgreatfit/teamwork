@@ -16,8 +16,8 @@ echo "Collect static files"
 #    echo "Waiting for Postgres server, $((RETRIES--)) remaining attempts..."
 #        sleep 1
 #
-./wait-for-it.sh db:5432 && python manage.py migrate
-python manage.py collectstatic --no-input --clear
+python manage.py migrate
+python manage.py collectstatic --no-input
 python manage.py runserver 0.0.0.0:9000
 
 #

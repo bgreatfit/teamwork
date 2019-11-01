@@ -7,13 +7,10 @@ before_install:
 script:
 - echo $DJANGO_SECRET_KEY
 - echo "DONE"
- docker-compose  exec web python manage.py test
+#docker-compose  exec web python manage.py test
 deploy:
   provider: script
   script: bash docker_push.sh
   skip_cleanup: true
   on:
     branch: master
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key:
-    secure: "$AWS_SECRET_KEY"
