@@ -1,5 +1,3 @@
-import django_heroku
-import dj_database_url
 """
 Django settings for teamwork project.
 
@@ -74,6 +72,7 @@ WSGI_APPLICATION = 'teamwork.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -84,11 +83,6 @@ DATABASES = {
     }
 }
 
-
-DATABASE_URL = os.environ.get('DATABASE_URL')
-db_from_env = dj_database_url.config(default=DATABASE_URL, conn_max_age=500, ssl_require=True)
-DATABASES['default'].update(db_from_env)
-django_heroku.settings(locals())
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
