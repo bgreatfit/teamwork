@@ -50,5 +50,4 @@ COPY /app/ /app/
 COPY app/entrypoint.dev.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 #ENTRYPOINT ["sh","/app/entrypoint.dev.sh"]
-CMD ["sh","/app/entrypoint.sh"]
-
+CMD gunicorn teamwork.wsgi:application --bind 0.0.0.0:$PORT
