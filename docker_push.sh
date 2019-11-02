@@ -14,11 +14,11 @@ if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_PULL_REQUEST == "false" ]; then s
 
 #    - heroku addons:create heroku-postgresql:hobby-dev -a mywebapp0
 
-#    - heroku run container:release web -a webapp-dpdth
-#    - heroku run python manage.py makemigrations -a webapp-dpdth
-#    - heroku run python manage.py migrate -a webapp-dpdth
-chmod +x heroku-container-release.sh
-
-sudo chown $USER:docker ~/.docker
-sudo chown $USER:docker ~/.docker/config.json
-sudo chmod g+rw ~/.docker/config.json
+heroku run container:release web -a teamworka
+heroku run python manage.py makemigrations -a teamworka
+heroku run python manage.py migrate -a teamworka
+#chmod +x heroku-container-release.sh
+#
+#sudo chown $USER:docker ~/.docker
+#sudo chown $USER:docker ~/.docker/config.json
+#sudo chmod g+rw ~/.docker/config.json
