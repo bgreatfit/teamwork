@@ -13,8 +13,8 @@ python manage.py collectstatic --no-input --clear
 #celery -A cowrywise beat
 ## Start server
 echo "Starting server"
-PORT=9000
+#PORT=8000
 #python manage.py flush --no-input
 #python manage.py collectstatic --no-input
-gunicorn --timeout=30 --workers=2 --bind 0.0.0.0:$PORT teamwork.wsgi:application
+#gunicorn --timeout=30 --workers=2 --bind 0.0.0.0:$PORT teamwork.wsgi:application
 exec "$@"
