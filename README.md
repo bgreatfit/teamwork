@@ -6,7 +6,7 @@ Dependencies:
   * Docker engine v19.03.1, or higher. Your OS provided package might be a little old, if you encounter problems, do upgrade. See [https://docs.docker.com/engine/installation](https://docs.docker.com/engine/installation)
   * Docker compose v1.24 or higher. See [docs.docker.com/compose/install](https://docs.docker.com/compose/install/)
   
-Use git clone [https://github.com/bgreatfit/Esusu.git](https://github.com/bgreatfit/LeadsManager.git) to download project
+Use git clone [https://github.com/bgreatfit/teamwork.git](https://github.com/bgreatfit/teamwork.git) to download project
 
 Once you're done, simply `cd` to your project and run `docker-compose up -d`. This will initialise and start all the containers,
  and also run database migrations,collectstatic files see .entrypoint.sh for more info.
@@ -18,16 +18,13 @@ You can access your application via **`127.0.0.1:8000`**, if you're running the 
 
 ## Hosts within your environment
 
-View get access to phpmyadmin using **`127.0.0.1:8083`**
-
 username: **`root`**
 password: **`root`**
 
 Service|Hostname |Port number
 -------|---------|-----------
-django |django   |8000
-mysql  |mysql    |8306
-phpmyadmin  |phpmyadmin    |8083
+web    |django   |8000
+postgres|postgres |5432
 nginx  |nginx    |8000
 
 
