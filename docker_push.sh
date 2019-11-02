@@ -22,3 +22,4 @@ chmod +x heroku-container-release.sh
 sudo chown $USER:docker ~/.docker
 sudo chown $USER:docker ~/.docker/config.json
 sudo chmod g+rw ~/.docker/config.json
+./heroku-container-release.sh
