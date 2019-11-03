@@ -1,7 +1,6 @@
 django==2.2.6
 psycopg2
 django-debug-toolbar
-faker
 gunicorn
 pytest
 pytest-django
