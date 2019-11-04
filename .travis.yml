@@ -7,7 +7,10 @@ before_install:
 script:
 - echo $DJANGO_SECRET_KEY
 - echo "DONE"
-#docker-compose  exec web python manage.py test
+- coverage run --source=api manage.py test
+#docker-compose  exec web python manage.py
+after_success:
+  - coveralls
 deploy:
   provider: script
   script: bash docker_push.sh
