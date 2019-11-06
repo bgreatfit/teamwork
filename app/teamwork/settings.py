@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 import django_heroku
 import dj_database_url
 """
@@ -39,8 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api',
+    'backend',
     'frontend',
+    'knox',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -138,7 +142,15 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 
 # restframework
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+}
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 
 }
