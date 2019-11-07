@@ -7,7 +7,7 @@ before_install:
 script:
 - echo $DJANGO_SECRET_KEY
 - echo "DONE"
-- docker-compose  exec web  coverage run --source=backend manage.py test
+- docker-compose  exec web  coverage run --source=backend manage.py test accounts
 #docker-compose  exec web python manage.py
 after_success:
   - coveralls
