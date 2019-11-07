@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/bgreatfit/teamwork.svg?branch=ft-useraccount-rest-endpoint-1111)](https://travis-ci.org/bgreatfit/teamwork) [![Coverage Status](https://coveralls.io/repos/github/bgreatfit/teamwork/badge.svg)](https://coveralls.io/github/bgreatfit/teamwork)
+[![Build Status](https://travis-ci.org/bgreatfit/teamwork.svg?branch=ft-useraccount-rest-endpoint-1111)](https://travis-ci.org/bgreatfit/teamwork) [![Coverage Status](https://coveralls.io/repos/github/bgreatfit/teamwork/badge.svg?branch=master)](https://coveralls.io/github/bgreatfit/teamwork?branch=master)
 Docker environment for  Teamwork project, Django restframework with JWT , React
 ===========================================
 # API Documentation:
