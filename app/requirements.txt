@@ -21,3 +21,4 @@ flake8
 dj-database-url
 whitenoise
 django-heroku
+coveralls
