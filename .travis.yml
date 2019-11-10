@@ -5,7 +5,7 @@ services:
 script:
 - echo $DJANGO_SECRET_KEY
 - echo "DONE"
-- docker-compose  run web sh -c "coverage run --source=backend manage.py test accounts"
+- docker-compose  run web sh -c "coverage run --source=accounts manage.py test accounts"
 #docker-compose  exec web python manage.py
 after_success:
   - coveralls
