@@ -14,19 +14,24 @@ class RegisterAPI(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        refresh = RefreshToken.for_user(user)
+        if serializer.is_valid():
+            user = serializer.save()
+            refresh = RefreshToken.for_user(user)
 
+            return Response({
+                "status": "success",
+                "data": {
+                    "message": "User account successfully created",
+                    "token": str(refresh.access_token),
+                    "userId": user.id
+                }
+
+            }, status=status.HTTP_201_CREATED)
         return Response({
-            "status": "success",
-            "data": {
-                "message": "User account successfully created",
-                "token": str(refresh.access_token)
-            }
+            "status": "error",
+            "error": serializer.errors
 
-        }, status=status.HTTP_201_CREATED)
-
+        }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginAPI(generics.GenericAPIView):
