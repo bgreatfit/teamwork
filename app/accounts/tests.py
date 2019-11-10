@@ -27,7 +27,7 @@ class EmployeeRegistrationAPIViewTestCase(APITestCase):
             "confirm_password": "INVALID_PASSWORD"
         }
         response = self.client.post(
-            reverse('create-user'),
+            reverse('accounts:create-user'),
             account_data,
             format="json")
         """Test the api has bucket creation capability."""
@@ -48,7 +48,7 @@ class EmployeeRegistrationAPIViewTestCase(APITestCase):
             "confirm_password": "1234567"
         }
         response = self.client.post(
-            reverse('create-user'),
+            reverse('accounts:create-user'),
             account_data,
             format="json")
         """Test the api has bucket creation capability."""
@@ -69,7 +69,7 @@ class EmployeeRegistrationAPIViewTestCase(APITestCase):
                 "confirm_password": "1234567"
             }
             response = self.client.post(
-                reverse('create-user'),
+                reverse('accounts:create-user'),
                 account_data,
                 format="json")
             """Test the api has bucket creation capability."""
@@ -82,7 +82,7 @@ class EmployeeRegistrationAPIViewTestCase(APITestCase):
                 "confirm_password": "1234567"
             }
             response = self.client.post(
-                reverse('create-user'),
+                reverse('accounts:create-user'),
                 account_data,
                 format="json")
             """Test the api has bucket creation capability."""
