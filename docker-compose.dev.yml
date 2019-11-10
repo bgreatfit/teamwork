@@ -23,6 +23,7 @@ services:
         context: .
         dockerfile: Dockerfile.dev
       container_name: ${PROJECT_NAME}-django
+      restart: on-failure
       env_file:
        - .env
       environment:
@@ -49,6 +50,18 @@ services:
         - POSTGRES_PORT=5432
       volumes:
         - postgres_data:/var/lib/postgresql/data/
+
+    pgadmin:
+      image: dpage/pgadmin4
+      container_name: ${PROJECT_NAME}-pgadmin
+      depends_on:
+        - db
+      ports:
+        - "5050:80"
+      environment:
+        PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+        PGADMIN_DEFAULT_PASSWORD: root
+      restart: always
 
     redis:
       image: redis:latest
