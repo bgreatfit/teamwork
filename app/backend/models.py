@@ -10,3 +10,10 @@ class GIF(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
+class Article(models.Model):
+    title = models.CharField(max_length=100)
+    article = models.TextField()
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='articles')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+

@@ -5,7 +5,7 @@ from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.response import Response
 import cloudinary.uploader
 
-from .serializers import GIFSerializer
+from .serializers import GIFSerializer, ArticleSerializer
 
 
 # Create your views here.
@@ -30,8 +30,6 @@ class GifCreateAPIView(generics.CreateAPIView):
         request.data.pop('image')
         request.data['image_url'] = upload_data['secure_url']
         serializer = self.get_serializer(data=request.data)
-
-        print(upload_data)
         if serializer.is_valid() and upload_data:
             gif = serializer.save(owner=self.request.user)
             return Response({
@@ -50,3 +48,8 @@ class GifCreateAPIView(generics.CreateAPIView):
             "error": serializer.errors
 
         }, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ArticleCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = ArticleSerializer
+    permission_classes = [permissions.IsAuthenticated]
