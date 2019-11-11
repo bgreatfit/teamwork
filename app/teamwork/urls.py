@@ -24,3 +24,6 @@ urlpatterns += [
 urlpatterns += [
     path('api/v1/auth/', include('accounts.urls')),
 ]
+urlpatterns += [
+    path('api/v1/', include('backend.urls')),
+]
