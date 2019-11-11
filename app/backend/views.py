@@ -53,3 +53,27 @@ class GifCreateAPIView(generics.CreateAPIView):
 class ArticleCreateAPIView(generics.ListCreateAPIView):
     serializer_class = ArticleSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return self.request.user.articles.all()
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            article = serializer.save(owner=self.request.user)
+            return Response({
+                "status": "success",
+                "data": {
+                    "articleId": article.id,
+                    "message": "Article successfully posted",
+                    "createdOn": article.created_at,
+                    "title": article.title,
+                    "article": article.article,
+                }
+
+            }, status=status.HTTP_201_CREATED)
+        return Response({
+            "status": "error",
+            "error": serializer.errors
+
+        }, status=status.HTTP_400_BAD_REQUEST)
