@@ -1,11 +1,12 @@
-import cloudinary as cloudinary
 from django.shortcuts import render
 from rest_framework import generics, permissions, status
 from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.response import Response
 import cloudinary.uploader
 
+from . permissions import IsOwner
 from .serializers import GIFSerializer, ArticleSerializer
+from .models import Article
 
 
 # Create your views here.
@@ -50,7 +51,7 @@ class GifCreateAPIView(generics.CreateAPIView):
         }, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ArticleCreateAPIView(generics.ListCreateAPIView):
+class ArticleListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = ArticleSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -66,6 +67,35 @@ class ArticleCreateAPIView(generics.ListCreateAPIView):
                 "data": {
                     "articleId": article.id,
                     "message": "Article successfully posted",
+                    "createdOn": article.created_at,
+                    "title": article.title,
+                    "article": article.article,
+                }
+
+            }, status=status.HTTP_201_CREATED)
+        return Response({
+            "status": "error",
+            "error": serializer.errors
+
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ArticleRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ArticleSerializer
+    permission_classes = (IsOwner, )
+
+    def get_queryset(self):
+        return self.request.user.articles.get(pk=self.kwargs.get('pk'))
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data, partial=True)
+        if serializer.is_valid():
+            article = serializer.save(owner=self.request.user)
+            return Response({
+                "status": "success",
+                "data": {
+                    "articleId": article.id,
+                    "message": "Article successfully updated",
                     "createdOn": article.created_at,
                     "title": article.title,
                     "article": article.article,
