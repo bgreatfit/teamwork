@@ -100,9 +100,11 @@ class ArticleDetailViewTestCase(APITestCase):
         self.password = "1234567"
         self.confirm_password = "1234567"
         self.user = User.objects.create_user(self.username, self.email, self.password)
+        print(self.user)
         data = {"article": "The purpose is to test this thing", "title":"the king"}
         self.article = Article.objects.create(owner=self.user, **data)
         self.url = reverse('article-detail', kwargs={"pk": self.article.pk})
+        self.client.force_authenticate(self.user)
 
     def test_employee_authorised_to_update_article(self):
         user = User.objects.create_user('king', 'jeje@gmail.com', '5555555')
@@ -121,7 +123,27 @@ class ArticleDetailViewTestCase(APITestCase):
         data = {"title": "The King", "article": "this awesome"}
         response = self.client.put(self.url, data)
         article = Article.objects.get(id=self.article.id)
-        print(json.loads(response.content))
 
-        self.assertEqual(json.loads(response.content), article.article)
+        self.assertEqual(json.loads(response.content).get('data')['article'], article.article)
+
+    def test_employee_can_patch_article(self):
+        data = {"article": "this linkin"}
+        response = self.client.put(self.url, data)
+        article = Article.objects.get(id=self.article.id)
+
+        self.assertEqual(json.loads(response.content).get('data')['title'], article.title)
+
+    def test_employee_can_delete_article(self):
+        response = self.client.delete(self.url)
+        self.assertEqual(204, response.status_code)
+
+    def test_todo_object_delete_authorization(self):
+        """
+            Test to verify that put call with different user token
+        """
+        user = User.objects.create_user("newuser", "new@user.com", "newpass")
+        self.client.force_authenticate(user)
+        response = self.client.delete(self.url)
+        self.assertEqual(403, response.status_code)
+
 
