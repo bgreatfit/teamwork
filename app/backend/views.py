@@ -82,13 +82,34 @@ class ArticleListCreateAPIView(generics.ListCreateAPIView):
 
 class ArticleRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ArticleSerializer
-    permission_classes = (IsOwner, )
+    permission_classes = (permissions.IsAuthenticated, IsOwner )
 
     def get_queryset(self):
-        return self.request.user.articles.get(pk=self.kwargs.get('pk'))
+        queryset = Article.objects.filter(pk=self.kwargs.get('pk'))
+        return queryset
+
+    def retrieve(self, request, *args, **kwargs):
+        serializer = self.get_serializer(instance=self.get_object())
+        print(serializer.data)
+        if serializer.data:
+
+            return Response({
+                "status": "success",
+                "data": {
+                    "articleId": serializer.data['id'],
+                    "article": serializer.data['article'],
+                    "title": serializer.data['title'],
+                }
+
+            }, status=status.HTTP_200_OK)
+        return Response({
+            "status": "error",
+            "error": serializer.errors
+
+        }, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data, partial=True)
+        serializer = self.get_serializer(data=request.data, partial=True, instance=self.get_object())
         if serializer.is_valid():
             article = serializer.save(owner=self.request.user)
             return Response({
@@ -105,5 +126,22 @@ class ArticleRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
         return Response({
             "status": "error",
             "error": serializer.errors
+
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance:
+            self.perform_destroy(instance)
+            return Response({
+                "status": "success",
+                "data": {
+                    "message": "Article successfully deleted",
+                }
+
+            }, status=status.HTTP_204_NO_CONTENT)
+        return Response({
+            "status": "error",
+            "error": "Article cannot be found"
 
         }, status=status.HTTP_400_BAD_REQUEST)

@@ -12,8 +12,6 @@ class IsOwner(permissions.BasePermission):
         # if request.method in permissions.SAFE_METHODS:
         #     return True
         #
-        print(request)
-        print(obj)
 
         # Write permissions are only allowed to the owner of the snippet.
-        return obj.user.id == request.user.id
+        return obj.owner == request.user

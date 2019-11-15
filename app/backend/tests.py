@@ -35,7 +35,7 @@ class GIFCreateViewTestCase(APITestCase):
     #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_employee_can_get_all_gifs(self):
-        data = {"image": "http://url.com", "title": "aproko"}
+        data = {"image_url": "http://url.com", "title": "aproko"}
         GIF.objects.create(**data)
         # self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(self.refresh.access_token))        response = self.client.post(self.url, data)
         response = self.client.get(self.url)
@@ -102,7 +102,6 @@ class ArticleDetailViewTestCase(APITestCase):
         self.user = User.objects.create_user(self.username, self.email, self.password)
         data = {"article": "The purpose is to test this thing", "title":"the king"}
         self.article = Article.objects.create(owner=self.user, **data)
-        print(self.article.owner)
         self.url = reverse('article-detail', kwargs={"pk": self.article.pk})
 
     def test_employee_authorised_to_update_article(self):
@@ -113,16 +112,16 @@ class ArticleDetailViewTestCase(APITestCase):
 
         # self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(self.refresh.access_token))
         # response = self.client.post(self.url, data)
-        response = self.client.patch(self.url, data)
-        print(json.loads(response.content))
+        response = self.client.put(self.url, data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-
+        response = self.client.patch(self.url, data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_employee_can_update_article(self):
         data = {"title": "The King", "article": "this awesome"}
+        response = self.client.put(self.url, data)
+        article = Article.objects.get(id=self.article.id)
+        print(json.loads(response.content))
 
-        # self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(self.refresh.access_token))
-        # response = self.client.post(self.url, data)
-        response = self.client.post(self.url, data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(json.loads(response.content), article.article)
 

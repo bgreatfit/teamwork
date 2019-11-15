@@ -9,6 +9,9 @@ class GIF(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='gifs')
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        db_table = "gif"
+
 
 class Article(models.Model):
     title = models.CharField(max_length=100, blank=True, )
@@ -18,5 +21,8 @@ class Article(models.Model):
 
     def __str__(self):
         return f"{self.article}"
+
+    class Meta:
+        db_table = "article"
 
 
