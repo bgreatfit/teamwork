@@ -90,9 +90,7 @@ class ArticleRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
 
     def retrieve(self, request, *args, **kwargs):
         serializer = self.get_serializer(instance=self.get_object())
-        print(serializer.data)
         if serializer.data:
-
             return Response({
                 "status": "success",
                 "data": {
