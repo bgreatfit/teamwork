@@ -3,12 +3,12 @@ language: generic
 services:
 - docker
 before_install:
-- docker-compose  run web sh -c "coverage run --source= manage.py test"
-- docker ps
+- docker-compose up -d
 
 script:
 - docker ps
-- docker-compose  exec web sh -c "coveralls"
+- docker-compose  exec web coverage run --source= manage.py test
+- docker-compose  exec web coveralls
 
 #- echo $DJANGO_SECRET_KEY
 #- echo "DONE"

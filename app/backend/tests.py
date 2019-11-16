@@ -41,6 +41,11 @@ class GIFCreateViewTestCase(APITestCase):
         response = self.client.get(self.url)
         self.assertTrue(len(json.loads(response.content)) == GIF.objects.count())
 
+    # def test_employee_delete_article(self):
+    #     url = reverse('gif-detail', kwargs={'pk':3})
+    #     response = self.client.delete(url)
+    #     self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
 
 class ArticleListCreateViewTestCase(APITestCase):
     url = reverse("article-list")
@@ -100,7 +105,6 @@ class ArticleDetailViewTestCase(APITestCase):
         self.password = "1234567"
         self.confirm_password = "1234567"
         self.user = User.objects.create_user(self.username, self.email, self.password)
-        print(self.user)
         data = {"article": "The purpose is to test this thing", "title":"the king"}
         self.article = Article.objects.create(owner=self.user, **data)
         self.url = reverse('article-detail', kwargs={"pk": self.article.pk})
@@ -137,13 +141,19 @@ class ArticleDetailViewTestCase(APITestCase):
         response = self.client.delete(self.url)
         self.assertEqual(204, response.status_code)
 
-    def test_todo_object_delete_authorization(self):
+    def test_employee_delete_article_authorization(self):
         """
             Test to verify that put call with different user token
         """
         user = User.objects.create_user("newuser", "new@user.com", "newpass")
         self.client.force_authenticate(user)
         response = self.client.delete(self.url)
-        self.assertEqual(403, response.status_code)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_employee_delete_article(self):
+        response = self.client.delete(self.url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+
 
 

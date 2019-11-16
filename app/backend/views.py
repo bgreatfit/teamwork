@@ -6,7 +6,7 @@ import cloudinary.uploader
 
 from . permissions import IsOwner
 from .serializers import GIFSerializer, ArticleSerializer
-from .models import Article
+from .models import Article, GIF
 
 
 # Create your views here.
@@ -25,8 +25,6 @@ class GifCreateAPIView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         file = request.data.get('image')
-        print(file)
-
         upload_data = cloudinary.uploader.upload(file)
         request.data.pop('image')
         request.data['image_url'] = upload_data['secure_url']
@@ -47,6 +45,32 @@ class GifCreateAPIView(generics.CreateAPIView):
         return Response({
             "status": "error",
             "error": serializer.errors
+
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GifRetrieveUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = GIFSerializer
+    permission_classes = (permissions.IsAuthenticated, IsOwner)
+
+    def get_queryset(self):
+        queryset = GIF.objects.filter(pk=self.kwargs.get('pk'))
+        return queryset
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance:
+            self.perform_destroy(instance)
+            return Response({
+                "status": "success",
+                "data": {
+                    "message": "gif successfully deleted",
+                }
+
+            }, status=status.HTTP_204_NO_CONTENT)
+        return Response({
+            "status": "error",
+            "error": "Article cannot be found"
 
         }, status=status.HTTP_400_BAD_REQUEST)
 
