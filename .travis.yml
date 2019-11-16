@@ -6,9 +6,10 @@ script:
 - echo $DJANGO_SECRET_KEY
 - echo "DONE"
 - docker-compose  run web sh -c "coverage run --source= manage.py test"
+
 #docker-compose  exec web python manage.py
 after_success:
-  coveralls
+  docker-compose  exec web sh -c "coveralls"
 deploy:
   provider: script
   script: bash docker_push.sh
