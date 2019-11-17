@@ -2,6 +2,9 @@ sudo: required
 language: generic
 services:
 - docker
+env:
+  global:
+    -  COVERALLS_REPO_TOKEN=bso8cKfRAH29qPCEHIwNbbhQDjWvf72cc
 before_install:
 - docker-compose up -d
 
@@ -10,7 +13,8 @@ script:
 - docker-compose  exec web coverage run --source= manage.py test
 after_success:
 - echo $COVERALLS_REPO_TOKEN
-- docker-compose  exec web -e COVERALLS_REPO_TOKEN=bso8cKfRAH29qPCEHIwNbbhQDjWvf72cc coveralls
+- echo $USER
+- docker-compose  exec web  coveralls
 #  docker-compose  exec web sh -c "coveralls"
 deploy:
   provider: script
