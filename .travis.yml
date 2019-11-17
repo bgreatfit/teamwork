@@ -2,12 +2,10 @@ sudo: required
 language: generic
 services:
 - docker
-env:
-  global:
-    -  COVERALLS_REPO_TOKEN=bso8cKfRAH29qPCEHIwNbbhQDjWvf72cc
 before_install:
 - docker-compose up -d
-
+install:
+  - pip install coveralls
 script:
 - docker ps
 - docker-compose  exec web coverage run --source= manage.py test && coveralls
