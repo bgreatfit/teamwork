@@ -1,7 +1,12 @@
 from datetime import timedelta
-
+import os
 import django_heroku
 import dj_database_url
+import cloudinary
+cloudinary.config(cloud_name=os.getenv('CLOUD_NAME'),
+                  api_key=os.getenv('API_KEY'),
+                  api_secret=os.getenv('API_SECRET')
+                  )
 """
 Django settings for teamwork project.
 
@@ -14,7 +19,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
-import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,6 +35,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+AUTH_USER_MODEL = "accounts.User"
 
 # Application definition
 
@@ -45,6 +50,7 @@ INSTALLED_APPS = [
     'frontend',
     'knox',
     'accounts',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

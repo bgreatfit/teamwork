@@ -21,4 +21,5 @@ flake8
 dj-database-url
 whitenoise
 django-heroku
-coveralls
+cloudinary==1.18.2
+python-coveralls

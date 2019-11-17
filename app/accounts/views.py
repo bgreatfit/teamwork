@@ -6,40 +6,56 @@ from rest_framework.authtoken.models import Token
 from knox.models import AuthToken
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
+from .serializers import UserSerializer, UserRegisterSerializer, UserLoginSerializer
 
 
 class RegisterAPI(generics.GenericAPIView):
-    serializer_class = RegisterSerializer
+    serializer_class = UserRegisterSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        refresh = RefreshToken.for_user(user)
+        if serializer.is_valid():
+            user = serializer.save()
+            refresh = RefreshToken.for_user(user)
 
+            return Response({
+                "status": "success",
+                "data": {
+                    "message": "User account successfully created",
+                    "token": str(refresh.access_token),
+                    "userId": user.id
+                }
+
+            }, status=status.HTTP_201_CREATED)
         return Response({
-            "status": "success",
-            "data": {
-                "message": "User account successfully created",
-                "token": str(refresh.access_token)
-            }
+            "status": "error",
+            "error": serializer.errors
 
-        }, status=status.HTTP_201_CREATED)
-
+        }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginAPI(generics.GenericAPIView):
-    serializer_class = LoginSerializer
+    serializer_class = UserLoginSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data
+        if serializer.is_valid():
+            user = serializer.validated_data
+            refresh = RefreshToken.for_user(user)
+
+            return Response({
+                "status": "success",
+                "data": {
+                    "token": str(refresh.access_token),
+                    "userId": user.id
+                }
+
+            }, status=status.HTTP_200_OK)
         return Response({
-            "user": UserSerializer(user, context=self.get_serializer_context()).data,
-            "token": AuthToken.objects.create(user)[1]
-        })
+            "status": "error",
+            "error": serializer.errors
+
+        }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserAPI(generics.RetrieveAPIView):
