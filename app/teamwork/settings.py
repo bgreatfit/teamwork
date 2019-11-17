@@ -3,7 +3,6 @@ import os
 import django_heroku
 import dj_database_url
 import cloudinary
-print(os.getenv('CLOUD_NAME'))
 cloudinary.config(cloud_name=os.getenv('CLOUD_NAME'),
                   api_key=os.getenv('API_KEY'),
                   api_secret=os.getenv('API_SECRET')

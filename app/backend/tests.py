@@ -19,8 +19,8 @@ class GIFCreateViewTestCase(APITestCase):
         self.email = "mike@y.com"
         self.password = "1234567"
         self.confirm_password = "1234567"
-        user = User.objects.create_user(self.username, self.email, self.password)
-        self.client.force_authenticate(user)
+        self.user = User.objects.create_user(self.username, self.email, self.password)
+        self.client.force_authenticate(self.user)
 
         # self.refresh = RefreshToken.for_user(user)
         #self.api_authentication()
@@ -36,15 +36,16 @@ class GIFCreateViewTestCase(APITestCase):
 
     def test_employee_can_get_all_gifs(self):
         data = {"image_url": "http://url.com", "title": "aproko"}
-        GIF.objects.create(**data)
-        # self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(self.refresh.access_token))        response = self.client.post(self.url, data)
+        GIF.objects.create(owner=self.user, **data)
         response = self.client.get(self.url)
         self.assertTrue(len(json.loads(response.content)) == GIF.objects.count())
 
-    # def test_employee_delete_article(self):
-    #     url = reverse('gif-detail', kwargs={'pk':3})
-    #     response = self.client.delete(url)
-    #     self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+    def test_employee_delete_gif(self):
+        data = {"image_url": "http://url.com", "title": "aproko"}
+        gif = GIF.objects.create(owner=self.user, **data)
+        url = reverse('gif-detail', kwargs={'pk': gif.id})
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
 
 class ArticleListCreateViewTestCase(APITestCase):

@@ -4,6 +4,7 @@ from .views import GifCreateAPIView, ArticleRetrieveUpdateDestroyAPIView, Articl
 
 # from .views import Registe
 #
+print()
 urlpatterns = [
      path('gifs', GifCreateAPIView.as_view(), name="gif-list"),
      path('gifs/<int:pk>', GifRetrieveUpdateDelete.as_view(), name="gif-detail"),

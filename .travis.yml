@@ -16,7 +16,7 @@ script:
 
 ##docker-compose  exec web python manage.py
 after_success:
-- docker ps
+- docker-compose  exec web coveralls
 #  docker-compose  exec web sh -c "coveralls"
 deploy:
   provider: script
