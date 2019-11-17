@@ -7,7 +7,7 @@ before_install:
 
 script:
 - docker ps
-- - docker-compose  exec web coverage run --source= manage.py test
+- docker-compose  exec web coverage run --source= manage.py test
 
 
 #- echo $DJANGO_SECRET_KEY
