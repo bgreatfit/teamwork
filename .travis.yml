@@ -9,6 +9,7 @@ script:
 - docker ps
 - docker-compose  exec web coverage run --source= manage.py test
 after_success:
+- echo $COVERALLS_REPO_TOKEN
 - docker-compose  exec web coveralls
 #  docker-compose  exec web sh -c "coveralls"
 deploy:
