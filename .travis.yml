@@ -10,7 +10,7 @@ before_install:
 
 script:
 - docker ps
-- docker-compose  exec web coverage run --source= manage.py test
+- docker-compose  exec web coverage run --source= manage.py test && coveralls
 after_success:
 - echo $COVERALLS_REPO_TOKEN
 - echo $USER
