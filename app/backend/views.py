@@ -5,9 +5,9 @@ from rest_framework.response import Response
 import cloudinary.uploader
 
 from .permissions import IsOwner
-from .serializers import GIFSerializer, ArticleSerializer, CommentSerializer, CategorySerializer, GIFCommentSerializer, \
+from .serializers import GIFSerializer, ArticleSerializer,CategorySerializer, GIFCommentSerializer, \
     ArticleCommentSerializer
-from .models import Article, GIF, Comment, Category
+from .models import Article, GIF, ArticleComment, Category, GIFComment
 
 
 # Create your views here.
@@ -225,12 +225,12 @@ class ArticleRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
 
 
 class ArticleCommentListCreateAPIView(generics.ListCreateAPIView):
-    serializer_class = CommentSerializer
+    serializer_class = ArticleCommentSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         article = Article.objects.get(pk=self.kwargs.get('article_id'))
-        return article.comments.all()
+        return article.article_comments.all()
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -263,7 +263,7 @@ class ArticleCommentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyA
     permission_classes = (permissions.IsAuthenticated, IsOwner)
 
     def get_queryset(self):
-        queryset = Comment.objects.filter(article_id=self.kwargs.get('pk'))
+        queryset = ArticleComment.objects.filter(article_id=self.kwargs.get('pk'))
         return queryset
 
     def retrieve(self, request, *args, **kwargs):
@@ -328,7 +328,8 @@ class GifCommentListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return self.request.gif.comments.all()
+        gif = GIF.objects.get(pk=self.kwargs.get('article_id'))
+        return gif.gif_comments.all()
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -357,11 +358,11 @@ class GifCommentListCreateAPIView(generics.ListCreateAPIView):
 
 
 class GifCommentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = ArticleSerializer
+    serializer_class = GIFCommentSerializer
     permission_classes = (permissions.IsAuthenticated, IsOwner)
 
     def get_queryset(self):
-        queryset = Comment.objects.filter(article_id=self.kwargs.get('pk'))
+        queryset = GIFComment.objects.filter(gif_id=self.kwargs.get('pk'))
         return queryset
 
     def retrieve(self, request, *args, **kwargs):
