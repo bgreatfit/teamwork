@@ -18,5 +18,5 @@ python manage.py collectstatic --no-input --clear
 echo "Starting server"
 #python manage.py flush --no-input
 #python manage.py collectstatic --no-input
-gunicorn --timeout=30 --workers=2 --bind 0.0.0.0:$PORT teamwork.wsgi:application
+gunicorn --timeout=30 --workers=2 --bind 0.0.0.0:9538 teamwork.wsgi:application
 exec "$@"

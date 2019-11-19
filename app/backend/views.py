@@ -5,7 +5,8 @@ from rest_framework.response import Response
 import cloudinary.uploader
 
 from .permissions import IsOwner
-from .serializers import GIFSerializer, ArticleSerializer, CommentSerializer, CategorySerializer
+from .serializers import GIFSerializer, ArticleSerializer, CommentSerializer, CategorySerializer, GIFCommentSerializer, \
+    ArticleCommentSerializer
 from .models import Article, GIF, Comment, Category
 
 
@@ -258,7 +259,7 @@ class ArticleCommentListCreateAPIView(generics.ListCreateAPIView):
 
 
 class ArticleCommentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = ArticleSerializer
+    serializer_class = ArticleCommentSerializer
     permission_classes = (permissions.IsAuthenticated, IsOwner)
 
     def get_queryset(self):
@@ -323,7 +324,7 @@ class ArticleCommentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyA
 
 
 class GifCommentListCreateAPIView(generics.ListCreateAPIView):
-    serializer_class = CommentSerializer
+    serializer_class = GIFCommentSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
@@ -344,6 +345,7 @@ class GifCommentListCreateAPIView(generics.ListCreateAPIView):
                     "message": "Comment successfully posted",
                     "createdOn": comment.created_at,
                     "comment": comment.comment,
+                    "gifTitle": gif.title,
                 }
 
             }, status=status.HTTP_201_CREATED)
