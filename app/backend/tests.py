@@ -218,11 +218,13 @@ class GifCreateViewTestCase(APITestCase):
         response = self.client.post(self.url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    def test_employee_can_get_article_comment(self):
-        # self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(self.refresh.access_token))
-        # response = self.client.post(self.url, data)
-        data = {"comment": "The king"}
-        article = Article.objects.create(owner=self.user, title="HIIII", article="behjenke")
-        Comment.objects.create(owner=self.user, article=article, **data)
-        response = self.client.get(self.url)
-        self.assertTrue(len(json.loads(response.content)) == article.comments.count())
+    # def test_employee_can_get_gif_comment(self):
+    #     # self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(self.refresh.access_token))
+    #     # response = self.client.post(self.url, data)
+    #     data = {"comment": "The king"}
+    #     article = GIF.objects.create(owner=self.user, title="HIIII", article="behjenke")
+    #     Comment.objects.create(owner=self.user, article=article, **data)
+    #     url = reverse('comment-list-gif', kwargs={"gif_id": article.id})
+    #
+    #     response = self.client.get(self.url)
+    #     self.assertTrue(len(json.loads(response.content)) == article.comments.count())
