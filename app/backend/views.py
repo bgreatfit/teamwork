@@ -245,6 +245,8 @@ class ArticleCommentListCreateAPIView(generics.ListCreateAPIView):
                     "message": "Comment successfully posted",
                     "createdOn": comment.created_at,
                     "comment": comment.comment,
+                    "articleTitle": article.title,
+                    "article": article.article,
                 }
 
             }, status=status.HTTP_201_CREATED)
