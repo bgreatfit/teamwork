@@ -8,7 +8,7 @@ from rest_framework.test import APITestCase
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from accounts.models import User
-from .models import GIF, Article
+from .models import GIF, Article, GIFComment, ArticleComment
 
 
 class GIFCreateViewTestCase(APITestCase):
@@ -92,8 +92,9 @@ class ArticleCreateViewTestCase(APITestCase):
     def test_employee_can_get_article(self):
         # self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(self.refresh.access_token))
         # response = self.client.post(self.url, data)
-        data = {"title": "The king" , "article": "the people na dem"}
+        data = {"title": "The king", "article": "the people na dem"}
         article = Article.objects.create(owner=self.user, **data)
+        print(self.url)
         response = self.client.get(self.url)
         self.assertTrue(len(json.loads(response.content)) == Article.objects.count())
 
@@ -156,5 +157,74 @@ class ArticleDetailViewTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
 
+class CommentCreateViewTestCase(APITestCase):
+
+    def setUp(self) -> None:
+        self.username = "mike"
+        self.email = "mike@y.com"
+        self.password = "1234567"
+        self.confirm_password = "1234567"
+        self.user = User.objects.create_user(self.username, self.email, self.password)
+        data = {"title": "The King", "article": "this awesome"}
+        self.article = Article.objects.create(owner=self.user, **data)
+        self.url = reverse("comment-list-article", kwargs={'article_id': self.article.id})
+
+        self.client.force_authenticate(self.user)
+
+        # self.refresh = RefreshToken.for_user(user)
+        #self.api_authentication()
+
+    # def api_authentication(self):
+    #     self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(self.refresh.access_token))
+
+    def test_employee_can_create_comment(self):
+        data = {"comment": "this is so cool"}
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_employee_can_get_article_comment(self):
+        # self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(self.refresh.access_token))
+        # response = self.client.post(self.url, data)
+        data = {"comment": "The king"}
+        article = Article.objects.create(owner=self.user, title='Awesome', article='This is to telll yo')
+        ArticleComment.objects.create(owner=self.user, article=article, **data)
+        url = reverse('comment-list-article', kwargs={"article_id": article.id})
+        response = self.client.get(url)
+        self.assertTrue(len(json.loads(response.content)) == article.article_comments.count())
 
 
+class GifCreateViewTestCase(APITestCase):
+
+    def setUp(self) -> None:
+        self.username = "mike"
+        self.email = "mike@y.com"
+        self.password = "1234567"
+        self.confirm_password = "1234567"
+        self.user = User.objects.create_user(self.username, self.email, self.password)
+        data = {"title": "The King", "article": "this awesome"}
+        self.article = Article.objects.create(owner=self.user, **data)
+        self.url = reverse("comment-list-article", kwargs={'article_id': self.article.id})
+
+        self.client.force_authenticate(self.user)
+
+        # self.refresh = RefreshToken.for_user(user)
+        #self.api_authentication()
+
+    # def api_authentication(self):
+    #     self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(self.refresh.access_token))
+
+    def test_employee_can_create_comment_on_gif(self):
+        data = {"comment": "this is so cool"}
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    # def test_employee_can_get_gif_comment(self):
+    #     # self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(self.refresh.access_token))
+    #     # response = self.client.post(self.url, data)
+    #     data = {"comment": "The king"}
+    #     article = GIF.objects.create(owner=self.user, title="HIIII", article="behjenke")
+    #     Comment.objects.create(owner=self.user, article=article, **data)
+    #     url = reverse('comment-list-gif', kwargs={"gif_id": article.id})
+    #
+    #     response = self.client.get(self.url)
+    #     self.assertTrue(len(json.loads(response.content)) == article.comments.count())

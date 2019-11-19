@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import GIF, Article
+from .models import GIF, Article, GIFComment,ArticleComment, Category
 
 
 class GIFSerializer(serializers.ModelSerializer):
@@ -14,4 +14,27 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = "__all__"
+
+
+class CategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = "__all__"
+
+
+class GIFCommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = GIFComment
+        fields = ("id", "comment","owner", "gif")
+        extra_kwargs = {'created_at': {'read_only': True}, 'updated_at': {'read_only': True}}
+
+
+class ArticleCommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ArticleComment
+        fields = ("id", "comment", "article", "owner")
+        extra_kwargs = {'created_at': {'read_only': True}, 'updated_at': {'read_only': True}}
 

@@ -5,7 +5,10 @@ echo "Collect static files"
 
 #python manage.py makemigrations
 ##
-python manage.py migrate
+until python manage.py migrate; do
+  sleep 2
+  echo "Retry!";
+done
 #
 python manage.py collectstatic --no-input --clear
 #$ celery worker -A cowrywise --loglevel=debug --concurrency=4
@@ -13,8 +16,7 @@ python manage.py collectstatic --no-input --clear
 #celery -A cowrywise beat
 ## Start server
 echo "Starting server"
-PORT=8000
 #python manage.py flush --no-input
 #python manage.py collectstatic --no-input
-gunicorn --timeout=30 --workers=2 --bind 0.0.0.0:$PORT teamwork.wsgi:application
+gunicorn --timeout=30 --workers=2 --bind 0.0.0.0:9538 teamwork.wsgi:application
 exec "$@"
