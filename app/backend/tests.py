@@ -8,7 +8,7 @@ from rest_framework.test import APITestCase
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from accounts.models import User
-from .models import GIF, Article, Comment
+from .models import GIF, Article, GIFComment, ArticleComment
 
 
 class GIFCreateViewTestCase(APITestCase):
@@ -187,10 +187,10 @@ class CommentCreateViewTestCase(APITestCase):
         # response = self.client.post(self.url, data)
         data = {"comment": "The king"}
         article = Article.objects.create(owner=self.user, title='Awesome', article='This is to telll yo')
-        Comment.objects.create(owner=self.user, article=article, **data)
+        ArticleComment.objects.create(owner=self.user, article=article, **data)
         url = reverse('comment-list-article', kwargs={"article_id": article.id})
         response = self.client.get(url)
-        self.assertTrue(len(json.loads(response.content)) == article.comments.count())
+        self.assertTrue(len(json.loads(response.content)) == article.article_comments.count())
 
 
 class GifCreateViewTestCase(APITestCase):
