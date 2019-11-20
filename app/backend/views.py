@@ -5,8 +5,8 @@ from rest_framework.response import Response
 import cloudinary.uploader
 
 from .permissions import IsOwner
-from .serializers import GIFSerializer, ArticleSerializer,CategorySerializer, GIFCommentSerializer, \
-    ArticleCommentSerializer
+from .serializers import GIFSerializer, ArticleSerializer, CategorySerializer, GIFCommentSerializer, \
+    ArticleCommentSerializer, FlagSerializer
 from .models import Article, GIF, ArticleComment, Category, GIFComment, Flag
 
 
