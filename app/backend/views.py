@@ -422,6 +422,11 @@ class GifCommentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVi
         }, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+class FlagCreateAPIView(generics.CreateAPIView):
+    queryset = Flag.objects.all()
+    serializer_class = FlagSerializer
+
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer

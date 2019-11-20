@@ -5,12 +5,12 @@ echo "Collect static files"
 
 #python manage.py makemigrations
 ##
-until python manage.py migrate; do
+until python manage.py collectstatic --no-input --clear; do
   sleep 2
   echo "Retry!";
 done
 #
-python manage.py collectstatic --no-input --clear
+
 #$ celery worker -A cowrywise --loglevel=debug --concurrency=4
 #celery -A cowrywise worker
 #celery -A cowrywise beat
