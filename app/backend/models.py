@@ -69,8 +69,8 @@ class GIFComment(models.Model):
 
 class Flag(models.Model):
     is_flagged = models.BooleanField()
-    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='flags')
-    gif = models.ForeignKey(GIF, on_delete=models.CASCADE, related_name='flags')
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='flags', null=True)
+    gif = models.ForeignKey(GIF, on_delete=models.CASCADE, related_name='flags', null=True)
     article_comment = models.ForeignKey(ArticleComment, null=True, on_delete=models.CASCADE, related_name='flags')
     gif_comment = models.ForeignKey(GIFComment, null=True, on_delete=models.CASCADE, related_name='flags')
 

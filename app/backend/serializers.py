@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import GIF, Article, GIFComment,ArticleComment, Category
+from .models import GIF, Article, GIFComment, ArticleComment, Category, Flag
 
 
 class GIFSerializer(serializers.ModelSerializer):
@@ -30,6 +30,12 @@ class GIFCommentSerializer(serializers.ModelSerializer):
         fields = ("id", "comment","owner", "gif")
         extra_kwargs = {'created_at': {'read_only': True}, 'updated_at': {'read_only': True}}
 
+
+class FlagSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Flag
+        fields = "__all__"
 
 class ArticleCommentSerializer(serializers.ModelSerializer):
 

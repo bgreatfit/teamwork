@@ -7,7 +7,7 @@ import cloudinary.uploader
 from .permissions import IsOwner
 from .serializers import GIFSerializer, ArticleSerializer,CategorySerializer, GIFCommentSerializer, \
     ArticleCommentSerializer
-from .models import Article, GIF, ArticleComment, Category, GIFComment
+from .models import Article, GIF, ArticleComment, Category, GIFComment, Flag
 
 
 # Create your views here.
