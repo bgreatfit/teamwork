@@ -48,7 +48,7 @@ RUN npm install
 COPY /app/ /app/
 # run entrypoint.sh
 RUN python manage.py collectstatic --noinput
-echo "$PORT"
+echo $PORT
 CMD gunicorn teamwork.wsgi:application --bind 0.0.0.0:$PORT
 #RUN chmod +x /app/entrypoint.sh
 #ENTRYPOINT ["sh","/app/entrypoint.dev.sh"]
