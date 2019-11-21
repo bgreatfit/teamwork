@@ -6,12 +6,12 @@ services:
 #- docker-compose up
 
 script:
-- docker-compose  run web coverage run --source= manage.py test && coveralls
+- docker-compose  run web coverage run --source= manage.py test 
 
-#after_success:
+after_success:
 #- docker ps
 #- docker-compose  exec web  coveralls
-#  docker-compose  exec web sh -c "coveralls"
+- docker-compose  run web coveralls
 deploy:
   provider: script
   script: bash docker_push.sh
