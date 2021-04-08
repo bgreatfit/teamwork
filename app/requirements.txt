@@ -1,4 +1,4 @@
-django==2.2.6
+django==2.2.20
 psycopg2
 django-debug-toolbar
 gunicorn
